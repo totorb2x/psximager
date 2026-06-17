@@ -1,27 +1,41 @@
-name: Compilation Windows PSXImager
+name: Compilation Windows PSXImager Officiel
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Recupere les sources
       uses: actions/checkout@v4
 
-    - name: Compile les fichiers pour Linux
-      run: |
-        gcc -O2 src/psxrip.c -o psxrip
-        gcc -O2 src/psxbuild.c -o psxbuild
-        gcc -O2 src/psxinject.c -o psxinject
+    - name: Configuration et Compilation via MSYS2 (Officiel)
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW32
+        update: true
+        install: >-
+          autoconf
+          automake
+          make
+          mingw-w64-i686-toolchain
+          mingw-w64-i686-libcdio
+          mingw-w64-i686-vcdimager
 
-    - name: Livre les fichiers Linux
+    - name: Executer le Build
+      shell: msys2 {0}
+      run: |
+        ./bootstrap
+        ./configure --host=i686-w64-mingw32 LDFLAGS="-s -static"
+        make
+
+    - name: Livre les EXE Windows
       uses: actions/upload-artifact@v4
       with:
-        name: psximager-linux
+        name: psximager-windows-officiel
         path: |
-          psxrip
-          psxinject
-          psxbuild
+          src/psxrip.exe
+          src/psxinject.exe
+          src/psxbuild.exe
