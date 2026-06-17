@@ -11,12 +11,11 @@ jobs:
     - name: Recupere les sources
       uses: actions/checkout@v4
 
-    - name: Compile le tout via MSYS2
-      shell: msys2 {0}
+    - name: Compile le tout avec le chemin direct
       run: |
-        gcc -O2 src/psxrip.c -o psxrip.exe
-        gcc -O2 src/psxbuild.c -o psxbuild.exe
-        gcc -O2 src/psxinject.c -o psxinject.exe
+        C:\msys64\mingw64\bin\gcc.exe -O2 src/psxrip.c -o psxrip.exe
+        C:\msys64\mingw64\bin\gcc.exe -O2 src/psxbuild.c -o psxbuild.exe
+        C:\msys64\mingw64\bin\gcc.exe -O2 src/psxinject.c -o psxinject.exe
 
     - name: Livre les EXE
       uses: actions/upload-artifact@v4
