@@ -1,0 +1,32 @@
+name: Compilation Windows PSXImager
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Recupere les sources
+      uses: actions/checkout@v4
+
+    - name: Installe GCC
+      uses: egor-tisin/setup-gcc@v1
+      with:
+        version: latest
+
+    - name: Compile le tout
+      run: |
+        gcc -O2 src/psxrip.c -o psxrip.exe
+        gcc -O2 src/psxbuild.c -o psxbuild.exe
+        gcc -O2 src/psxinject.c -o psxinject.exe
+
+    - name: Livre les EXE
+      uses: actions/upload-artifact@v4
+      with:
+        name: psximager-windows
+        path: |
+          psxrip.exe
+          psxbuild.exe
+          psxinject.exe
