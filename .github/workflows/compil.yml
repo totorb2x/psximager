@@ -11,22 +11,17 @@ jobs:
     - name: Recupere les sources
       uses: actions/checkout@v4
 
-    - name: Installe le compilateur Windows pour Linux
+    - name: Compile les fichiers pour Linux
       run: |
-        sudo apt-get update
-        sudo apt-get install -y mingw-w64
+        gcc -O2 src/psxrip.c -o psxrip
+        gcc -O2 src/psxbuild.c -o psxbuild
+        gcc -O2 src/psxinject.c -o psxinject
 
-    - name: Compile les fichiers EXE pour Windows
-      run: |
-        x86_64-w64-mingw32-gcc -O2 src/psxrip.c -o psxrip.exe
-        x86_64-w64-mingw32-gcc -O2 src/psxbuild.c -o psxbuild.exe
-        x86_64-w64-mingw32-gcc -O2 src/psxinject.c -o psxinject.exe
-
-    - name: Livre les EXE
+    - name: Livre les fichiers Linux
       uses: actions/upload-artifact@v4
       with:
-        name: psximager-windows
+        name: psximager-linux
         path: |
-          psxrip.exe
-          psxbuild.exe
-          psxinject.exe
+          psxrip
+          psxinject
+          psxbuild
