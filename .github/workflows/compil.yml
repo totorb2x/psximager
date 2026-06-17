@@ -11,7 +11,8 @@ jobs:
     - name: Recupere les sources
       uses: actions/checkout@v4
 
-    - name: Compile le tout
+    - name: Compile le tout via MSYS2
+      shell: msys2 {0}
       run: |
         gcc -O2 src/psxrip.c -o psxrip.exe
         gcc -O2 src/psxbuild.c -o psxbuild.exe
