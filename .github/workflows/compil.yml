@@ -11,11 +11,6 @@ jobs:
     - name: Recupere les sources
       uses: actions/checkout@v4
 
-    - name: Installe GCC
-      uses: egor-tisin/setup-gcc@v1
-      with:
-        version: latest
-
     - name: Compile le tout
       run: |
         gcc -O2 src/psxrip.c -o psxrip.exe
